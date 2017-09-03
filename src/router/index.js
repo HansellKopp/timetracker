@@ -8,11 +8,13 @@ import moment from 'vue-moment'
 import VueLocalStorage from 'vue-localstorage'
 import 'element-ui/lib/theme-default/index.css'
 import locale from 'element-ui/lib/locale/lang/en'
+import VueSweetAlert from 'vue-sweetalert'
 
 Vue.use(Router)
-Vue.use(moment, require('moment/locale/fr'))
+Vue.use(moment)
 Vue.use(ElementUI, { locale })
 Vue.use(VueLocalStorage)
+Vue.use(VueSweetAlert)
 
 export default new Router({
   routes: [

@@ -1,15 +1,6 @@
 <template>
   <div class="itemList u-absolute-flex-column">
     <header class="app-header">Worked days: {{ itemsCount }} Total Hours: {{ totalHours }}</header>
-    <ul class="u-scroller">
-      <li v-for="item in workdayItems" :key="item.id">
-        <router-link :to="{ name: 'View', params: { id: item.id } }">
-          <i class="el-icon-arrow-right"></i>
-          <p class="note-title">{{ item.date | moment("dddd, MMMM Do YYYY") }}   ( {{  item.hours }}  )</p>
-          <p class="small">{{ item.start | moment("h:mm: a") }}-{{ item.end | moment("h:mm: a") }}</p>
-        </router-link>
-      </li>
-    </ul>
     <div class="app-controls">
       <div class="u-flex-row">
         <el-button type="primary" class="u-elastic" @click="createItem()">
@@ -18,6 +9,15 @@
         </el-button>
       </div>
     </div>
+    <ul class="u-scroller">
+      <li v-for="item in workdayItems" :key="item.id">
+        <router-link :to="{ name: 'View', params: { id: item.id } }">
+          <i class="el-icon-arrow-right"></i>
+          <p class="note-title">{{ item.date | moment("dddd, MMMM Do YYYY") }}   ( {{  item.hours }}  )</p>
+          <p class="small">{{ item.start }}-{{ item.end }}</p>
+        </router-link>
+      </li>
+    </ul>
   </div>
 </template>
 

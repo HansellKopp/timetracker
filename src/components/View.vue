@@ -11,27 +11,20 @@
     <div class="u-scroller">
       <div class="content">
           <h2>{{ item.date | moment("dddd, MMMM Do YYYY") }}</h2>
-          <h3>Start:{{ item.start | moment("h:mm: a") }}</h3>
-          <h3>  End:{{ item.end | moment("h:mm: a") }}</h3>
-          <h3>Time worked:{{ hours }}</h3>
+          <h3>Start:{{ item.start }}</h3>
+          <h3>  End:{{ item.end }}</h3>
+          <h3>Time worked:{{ item.hours }}</h3>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import api from '../api'
-
 export default {
   props: ['id'],
   data () {
     return {
       item: {}
-    }
-  },
-  computed: {
-    hours () {
-      return api.timeLapse(this.item.start, this.item.end)
     }
   },
   methods: {
@@ -46,10 +39,13 @@ export default {
       this.$router.push({ name: 'Edit', params: { id: this.item.id } })
     },
     remove () {
-      this.$confirm('This will permanently delete this item. Continue?', 'Warning', {
-        confirmButtonText: 'OK',
-        cancelButtonText: 'Cancel',
-        type: 'warning'
+      this.$swal({
+        title: 'Warning',
+        text: 'This will delete this item. Continue',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#DD6B55',
+        confirmButtonText: 'Yes, delete it!'
       }).then(() => {
         const workdayItems = this.$localStorage.get('workdayItems')
         const itemIndex = workdayItems.findIndex(item => item.id === this.id)
