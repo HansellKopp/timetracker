@@ -34,6 +34,9 @@ export default {
   border-bottom: solid 1px #EFEFEF;
   padding: 10px 20px;
   font-weight: 700;
+  background-color: #58B7FF;
+  color: white;
+  font-size: 1.2em;
 }
 
 .app-header .back-button {
@@ -85,4 +88,12 @@ export default {
   flex-grow: 1;
   border-radius: 0 !important;
 }
+footer {
+  background-color: #58B7FF;
+  color: white;
+  font-size: 1.2em;
+  text-align: right;
+  padding: 5px;
+}
+
 </style>

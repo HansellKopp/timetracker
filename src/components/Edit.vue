@@ -6,62 +6,60 @@
         <div class="menu-text u-elastic">{{ id ? 'Editing Item' : 'Create Item' }}</div>
       </div>
     </header>
-    <div class="app-controls">
-      <div class="u-flex-row">
-        <el-button type="primary" class="u-elastic" @click="save()">Save</el-button>
-      </div>
-    </div>
-    <ul class="u-scroller">
-      <el-form ref="form" :model="item" class="create-form" input-width="120px">
-        <el-form-item label="Date">
-         <el-col>
-            <el-date-picker
-            type="date"
-            placeholder="Pick a date"
-            v-model="item.date"
-            large
-            :picker-options="{
-              start: '00:01',
-              step: '00:05',
-              end: '23:59'
-            }"
-            >
-            </el-date-picker>
-         </el-col>
-        </el-form-item>
-        <el-form-item label="Start">
+      <el-card class="box-card" style="margin:20px;">
+        <div slot="header" class="clearfix">
+          <span style="line-height: 36px;">Register Hours</span>
+          <el-button style="float: right;" type="primary" @click="save()">Save</el-button>
+        </div>
+        <el-form ref="form" :model="item" class="create-form" input-width="120px">
+          <el-form-item label="Date">
           <el-col>
-            <el-time-select 
-              placeholder="Start time" 
-              v-model="item.start" 
-              size="large"
-              :picker-options="{
-              start: '00:01',
-              step: '00:05',
-              end: '23:59'
-            }"
-            >
-            </el-time-select>
+              <el-date-picker
+              type="date"
+              placeholder="Pick a date"
+              v-model="item.date"
+              large
+              >
+              </el-date-picker>
           </el-col>
-        </el-form-item>
-        <el-form-item label="End">
-          <el-col>
-            <el-time-select
-              placeholder="End time"
-              v-model="item.end"
-              size="large"
-            >
-            </el-time-select>
-          </el-col>
-        </el-form-item>
-      </el-form>
-    </ul>
+          </el-form-item>
+          <el-form-item label="Start">
+            <el-col>
+              <el-time-select 
+                placeholder="Start time" 
+                v-model="item.start" 
+                size="large"
+                :picker-options="{
+                start: '00:00',
+                step: '00:05',
+                end: '24:00'
+              }"
+              >
+              </el-time-select>
+            </el-col>
+          </el-form-item>
+          <el-form-item label="End">
+            <el-col>
+              <el-time-select
+                placeholder="End time"
+                v-model="item.end"
+                size="large"
+                :picker-options="{
+                start: '00:00',
+                step: '00:05',
+                end: '24:00'
+                }"
+              >
+              </el-time-select>
+            </el-col>
+          </el-form-item>
+      </el-form>     
+    </el-card>
   </div>
 </template>
 
 <script>
 import { saveItem, loadItem } from '../api'
-// const uuidV4 = require('uuid/v4')
 
 export default {
   props: ['id'],
@@ -69,22 +67,21 @@ export default {
     return {
       item: {
         date: new Date(),
-        start: '12:00',
-        end: '13:00',
+        start: new Date().getHours() + ':' + new Date().getMinutes(),
+        end: (new Date().getHours() + 8) + ':' + new Date().getMinutes(),
         itemIndex: -1
       }
     }
   },
   methods: {
     save () {
-      saveItem(this.item, this.itemIndex, this.$localStorage)
+      saveItem(this.item, this.$localStorage)
       this.$router.push('/')
     },
     loadItem () {
       const item = loadItem(this.id, this.$localStorage)
-      if (!item) {
-        this.item = item.item
-        this.itemIndex = item.itemIndex
+      if (item) {
+        this.item = item
       } else {
         this.$router.push('/')
       }
@@ -101,7 +98,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .create-form {
   padding: 20px 16px;
 }

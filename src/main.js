@@ -15,6 +15,10 @@ new Vue({
     workdayItems: {
       type: Array,
       default: []
+    },
+    hourlyIncome: {
+      type: Number,
+      default: 0
     }
   },
   components: { App }

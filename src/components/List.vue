@@ -1,34 +1,81 @@
 <template>
   <div class="itemList u-absolute-flex-column">
-    <header class="app-header">Worked days: {{ itemsCount }} Total Hours: {{ totalHours }}</header>
-    <div class="app-controls">
+    <header class="app-header">
       <div class="u-flex-row">
-        <el-button type="primary" class="u-elastic" @click="createItem()">
-          <i class="el-icon-time"></i>
-          Add Working hours
-        </el-button>
+        <div class="menu-text u-elastic">Working Hours Tracker</div>
+        <a @click="createItem()" type="primary"><i class="el-icon-plus"></i></a>
       </div>
-    </div>
+    </header>
     <ul class="u-scroller">
       <li v-for="item in workdayItems" :key="item.id">
         <router-link :to="{ name: 'View', params: { id: item.id } }">
           <i class="el-icon-arrow-right"></i>
-          <p class="note-title">{{ item.date | moment("dddd, MMMM Do YYYY") }}   ( {{  item.hours }}  )</p>
-          <p class="small">{{ item.start }}-{{ item.end }}</p>
+          <p class="note-title">{{ item.date | moment("dddd, MMMM Do YYYY") }}</p>
+          <p class="small">{{ item.start }}-{{ item.end }}  ( {{  item.hours }}  )</p>
         </router-link>
       </li>
     </ul>
+  <footer class="app-footer">
+    <el-row>
+        <el-col :span="5">Days:</el-col>
+        <el-col :span="5">{{ itemsCount }}</el-col>
+        <el-col :span="6">Hours:</el-col>
+        <el-col :span="6">{{ totalHours }}</el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="10">
+        <el-button type="primary" @click="dialogVisible = true">
+            <i class="el-icon-setting"></i>
+            Income:{{ hourlyIncome.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' }) }}
+        </el-button>
+      </el-col>
+        <el-col :span="6">Total:</el-col>
+        <el-col :span="6" style="{text-align: right;}">
+          {{ totalIncome.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' }) }}
+        </el-col>
+    </el-row>
+  </footer>
+  <el-dialog
+    title="Modify Income"
+    :visible.sync="dialogVisible"
+    size="large"
+    >
+    <el-form>
+      <el-form-item label="New Income">
+        <el-input-number v-model="hourlyIncome" :min="1" :max="100"></el-input-number>
+      </el-form-item>
+    </el-form>
+    <span slot="footer" class="dialog-footer">
+      <el-button @click="cancelDialog">Cancel</el-button>
+      <el-button type="primary" @click="acceptDialog">Confirm</el-button>
+    </span>
+  </el-dialog>
   </div>
 </template>
 
 <script>
+import { income } from '../api'
+
 export default {
   data () {
     return {
-      workdayItems: []
+      workdayItems: [],
+      hourlyIncome: this.rate(),
+      dialogVisible: false
     }
   },
   methods: {
+    acceptDialog () {
+      this.$localStorage.set('hourlyIncome', this.hourlyIncome)
+      this.dialogVisible = false
+    },
+    cancelDialog () {
+      this.hourlyIncome = this.rate()
+      this.dialogVisible = false
+    },
+    rate () {
+      return this.$localStorage.get('hourlyIncome')
+    },
     loadItems () {
       this.workdayItems = this.$localStorage.get('workdayItems')
     },
@@ -40,6 +87,9 @@ export default {
     this.loadItems()
   },
   computed: {
+    totalIncome () {
+      return income(this.totalHours, this.hourlyIncome)
+    },
     itemsCount () {
       return this.workdayItems.length
     },

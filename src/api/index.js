@@ -1,17 +1,28 @@
 const uuidV4 = require('uuid/v4')
 
+export function hourlyIncome (storage) {
+  return storage.get('hourlyIncome') || 0
+}
+
+export function income (time, rate) {
+  if (time) {
+    const hours = time.split(':')
+    return ((rate / 60) * parseInt(hours[1])) + (rate * parseInt(hours[0], 10))
+  } else {
+    return 0
+  }
+}
+
 export function timeLapse (start, end) {
-  console.log(start, end)
   let timeDiff = (new Date(end) - new Date(start)) / 1000
   timeDiff = Math.floor(timeDiff / 60)
   const minutes = Math.round(timeDiff % 60)
   timeDiff = Math.floor(timeDiff / 60)
   const hours = Math.round(timeDiff % 24)
-  console.log(hours, minutes)
   return `${('00' + hours).slice(-2)}:${('00' + minutes).slice(-2)}`
 }
 
-export function saveItem (_item, _itemIndex, storage) {
+export function saveItem (_item, storage) {
   const workdayItems = storage.get('workdayItems')
   const start = _item.start.split(':')
   const end = _item.end.split(':')
@@ -31,14 +42,13 @@ export function saveItem (_item, _itemIndex, storage) {
     end[0],
     end[1]
   )
-  console.log(dateStart, dateEnd)
   const item = Object.assign({}, _item, {
     id: _item.id || uuidV4(),
     hours: timeLapse(dateStart, dateEnd),
     timestamp: Date.now()
   })
-  if (_itemIndex >= 0) {
-    workdayItems[_itemIndex] = item
+  if (item.itemIndex >= 0) {
+    workdayItems[item.itemIndex] = item
   } else {
     workdayItems.push(item)
   }
@@ -49,7 +59,9 @@ export function loadItem (id, storage) {
   const workdayItems = storage.get('workdayItems')
   const itemIndex = workdayItems.findIndex(item => item.id === id)
   if (itemIndex >= 0) {
-    return { item: workdayItems[itemIndex], index: itemIndex }
+    const item = workdayItems[itemIndex]
+    item.itemIndex = itemIndex
+    return item
   } else {
     return null
   }
