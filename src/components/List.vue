@@ -42,7 +42,7 @@
     >
     <el-form>
       <el-form-item label="New Income">
-        <el-input-number v-model="hourlyIncome" :min="1" :max="100"></el-input-number>
+        <el-input type="number" v-model="hourlyIncome" step=".01"></el-input>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -60,21 +60,21 @@ export default {
   data () {
     return {
       workdayItems: [],
-      hourlyIncome: this.rate(),
+      hourlyIncome: 0,
       dialogVisible: false
     }
   },
   methods: {
     acceptDialog () {
-      this.$localStorage.set('hourlyIncome', this.hourlyIncome)
+      this.$localStorage.set('settings', { hourlyIncome: this.hourlyIncome })
       this.dialogVisible = false
     },
     cancelDialog () {
-      this.hourlyIncome = this.rate()
+      this.loadRate()
       this.dialogVisible = false
     },
-    rate () {
-      return this.$localStorage.get('hourlyIncome')
+    loadRate () {
+      this.hourlyIncome = this.$localStorage.get('settings').hourlyIncome
     },
     loadItems () {
       this.workdayItems = this.$localStorage.get('workdayItems')
@@ -84,6 +84,7 @@ export default {
     }
   },
   mounted () {
+    this.loadRate()
     this.loadItems()
   },
   computed: {

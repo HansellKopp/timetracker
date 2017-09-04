@@ -34,7 +34,16 @@ export default {
   border-bottom: solid 1px #EFEFEF;
   padding: 10px 20px;
   font-weight: 700;
-  background-color: #58B7FF;
+  background-color: #1D8CE0;
+  color: white;
+  font-size: 1.2em;
+}
+
+.app-footer {
+  border-bottom: solid 1px #EFEFEF;
+  padding: 10px 20px;
+  font-weight: 700;
+  background-color: #1D8CE0;
   color: white;
   font-size: 1.2em;
 }
@@ -89,7 +98,7 @@ export default {
   border-radius: 0 !important;
 }
 footer {
-  background-color: #58B7FF;
+  background-color: #1D8CE0;
   color: white;
   font-size: 1.2em;
   text-align: right;
