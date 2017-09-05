@@ -61,17 +61,12 @@ export default {
     return {
       workdayItems: [],
       hourlyIncome: 0,
-<<<<<<< HEAD
       dialogVisible: false,
       workdays: null
-=======
-      dialogVisible: false
->>>>>>> b19aa2fca1074a56e6fce6a550fdf810aa3dc61c
     }
   },
   methods: {
     acceptDialog () {
-<<<<<<< HEAD
       this.workdays.setIncome(this.hourlyIncome)
       this.dialogVisible = false
     },
@@ -79,39 +74,14 @@ export default {
       this.hourlyIncome = this.workdays.income('1:00')
       this.dialogVisible = false
     },
-=======
-      this.$localStorage.set('settings', { hourlyIncome: this.hourlyIncome })
-      this.dialogVisible = false
-    },
-    cancelDialog () {
-      this.loadRate()
-      this.dialogVisible = false
-    },
-    loadRate () {
-      this.hourlyIncome = this.$localStorage.get('settings').hourlyIncome
-    },
-    loadItems () {
-      this.workdayItems = this.$localStorage.get('workdayItems')
-    },
->>>>>>> b19aa2fca1074a56e6fce6a550fdf810aa3dc61c
     createItem () {
       this.$router.push('new')
     }
   },
   mounted () {
-<<<<<<< HEAD
-    this.workdays = new WorkDays(this.$localStorage)
     this.workdayItems = this.workdays.getAll()
     this.hourlyIncome = this.workdays.income('1:00')
-=======
-    this.loadRate()
-    this.loadItems()
->>>>>>> b19aa2fca1074a56e6fce6a550fdf810aa3dc61c
   },
-  computed: {
-    totalHours () {
-      return this.workdays ? this.workdays.totalHours() : 0
-    },
     totalIncome () {
       return this.workdays ? this.workdays.income(this.workdays.totalHours(), this.hourlyIncome) : 0
     },
