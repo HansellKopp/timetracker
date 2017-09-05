@@ -2,6 +2,9 @@
 
 > A Vue.js project
 
+## Demo
+  https://hansellkopp.github.io/timetracker/
+
 ## Build Setup
 
 ``` bash

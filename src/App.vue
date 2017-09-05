@@ -34,7 +34,20 @@ export default {
   border-bottom: solid 1px #EFEFEF;
   padding: 10px 20px;
   font-weight: 700;
+<<<<<<< HEAD
   background-color:#2196f3;
+=======
+  background-color: #1D8CE0;
+  color: white;
+  font-size: 1.2em;
+}
+
+.app-footer {
+  border-bottom: solid 1px #EFEFEF;
+  padding: 10px 20px;
+  font-weight: 700;
+  background-color: #1D8CE0;
+>>>>>>> b19aa2fca1074a56e6fce6a550fdf810aa3dc61c
   color: white;
   font-size: 1.2em;
 }
@@ -89,7 +102,11 @@ export default {
   border-radius: 0 !important;
 }
 footer {
+<<<<<<< HEAD
   background-color: #2196f3;
+=======
+  background-color: #1D8CE0;
+>>>>>>> b19aa2fca1074a56e6fce6a550fdf810aa3dc61c
   color: white;
   font-size: 1.2em;
   text-align: right;
