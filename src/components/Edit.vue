@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { saveItem, loadItem } from '../api'
+import { WorkDays } from '../api'
 
 export default {
   props: ['id'],
@@ -68,18 +68,18 @@ export default {
       item: {
         date: new Date(),
         start: new Date().getHours() + ':' + new Date().getMinutes(),
-        end: (new Date().getHours() + 8) + ':' + new Date().getMinutes(),
-        itemIndex: -1
-      }
+        end: (new Date().getHours() + 8) + ':' + new Date().getMinutes()
+      },
+      workdays: null
     }
   },
   methods: {
     save () {
-      saveItem(this.item, this.$localStorage)
+      this.workdays.save(this.item)
       this.$router.push('/')
     },
     loadItem () {
-      const item = loadItem(this.id, this.$localStorage)
+      const item = this.workdays.getById(this.id)
       if (item) {
         this.item = item
       } else {
@@ -91,6 +91,7 @@ export default {
     }
   },
   mounted () {
+    this.workdays = new WorkDays(this.$localStorage)
     if (this.id) {
       this.loadItem()
     }

@@ -16,9 +16,11 @@ new Vue({
       type: Array,
       default: []
     },
-    hourlyIncome: {
-      type: Number,
-      default: 0
+    settings: {
+      type: Object,
+      default: {
+        hourlyIncome: 8.84
+      }
     }
   },
   components: { App }

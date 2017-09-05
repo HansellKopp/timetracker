@@ -12,7 +12,7 @@ export default {
 
 <style>
 #App {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'Roboto', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
@@ -34,7 +34,7 @@ export default {
   border-bottom: solid 1px #EFEFEF;
   padding: 10px 20px;
   font-weight: 700;
-  background-color: #58B7FF;
+  background-color:#2196f3;
   color: white;
   font-size: 1.2em;
 }
@@ -89,7 +89,7 @@ export default {
   border-radius: 0 !important;
 }
 footer {
-  background-color: #58B7FF;
+  background-color: #2196f3;
   color: white;
   font-size: 1.2em;
   text-align: right;

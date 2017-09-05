@@ -42,7 +42,7 @@
     >
     <el-form>
       <el-form-item label="New Income">
-        <el-input-number v-model="hourlyIncome" :min="1" :max="100"></el-input-number>
+        <el-input type="number" v-model="hourlyIncome" step=".01"></el-input>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -54,58 +54,44 @@
 </template>
 
 <script>
-import { income } from '../api'
+import { WorkDays } from '../api'
 
 export default {
   data () {
     return {
       workdayItems: [],
-      hourlyIncome: this.rate(),
-      dialogVisible: false
+      hourlyIncome: 0,
+      dialogVisible: false,
+      workdays: null
     }
   },
   methods: {
     acceptDialog () {
-      this.$localStorage.set('hourlyIncome', this.hourlyIncome)
+      this.workdays.setIncome(this.hourlyIncome)
       this.dialogVisible = false
     },
     cancelDialog () {
-      this.hourlyIncome = this.rate()
+      this.hourlyIncome = this.workdays.income('1:00')
       this.dialogVisible = false
-    },
-    rate () {
-      return this.$localStorage.get('hourlyIncome')
-    },
-    loadItems () {
-      this.workdayItems = this.$localStorage.get('workdayItems')
     },
     createItem () {
       this.$router.push('new')
     }
   },
   mounted () {
-    this.loadItems()
+    this.workdays = new WorkDays(this.$localStorage)
+    this.workdayItems = this.workdays.getAll()
+    this.hourlyIncome = this.workdays.income('1:00')
   },
   computed: {
+    totalHours () {
+      return this.workdays ? this.workdays.totalHours() : 0
+    },
     totalIncome () {
-      return income(this.totalHours, this.hourlyIncome)
+      return this.workdays ? this.workdays.income(this.workdays.totalHours(), this.hourlyIncome) : 0
     },
     itemsCount () {
       return this.workdayItems.length
-    },
-    totalHours () {
-      let hours = 0
-      let minutes = 0
-      this.workdayItems.map((s) => {
-        const item = s.hours.split(':')
-        hours += parseInt(item[0], 10)
-        minutes += parseInt(item[1], 10)
-      })
-      if (minutes > 59) {
-        hours += Math.floor(minutes / 60)
-        minutes = minutes % 60
-      }
-      return `${('00' + hours).slice(-2)}:${('00' + minutes).slice(-2)}`
     }
   }
 }

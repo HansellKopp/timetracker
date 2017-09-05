@@ -31,7 +31,7 @@
           </el-row>
           <el-row>
               <el-col :span="8">Income:</el-col>
-              <el-col :span="16">{{ dayIncome.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' }) }}</el-col>
+              <el-col :span="16">{{ income.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' }) }}</el-col>
           </el-row>
         </div>
     </el-card>
@@ -39,29 +39,24 @@
 </template>
 
 <script>
-import { income } from '../api'
+import { WorkDays } from '../api'
 
 export default {
   props: ['id'],
   data () {
     return {
       item: { hours: '00:00' },
-      rate: 0
-    }
-  },
-  computed: {
-    dayIncome () {
-      return income(this.item.hours, this.rate)
+      income: 0,
+      workdays: null
     }
   },
   methods: {
     load () {
-      const workdayItems = this.$localStorage.get('workdayItems')
-      this.item = workdayItems.find(item => item.id === this.id)
-      this.rate = this.$localStorage.get('hourlyIncome')
+      this.item = this.workdays.getById(this.id)
       if (!this.item) {
         this.$router.push('/')
       }
+      this.income = this.workdays.income(this.item.hours)
     },
     edit () {
       this.$router.push({ name: 'Edit', params: { id: this.id } })
@@ -75,10 +70,7 @@ export default {
         confirmButtonColor: '#DD6B55',
         confirmButtonText: 'Yes, delete it!'
       }).then(() => {
-        const workdayItems = this.$localStorage.get('workdayItems')
-        const itemIndex = workdayItems.findIndex(item => item.id === this.id)
-        workdayItems.splice(itemIndex, 1)
-        this.$localStorage.set('workdayItems', workdayItems)
+        this.workdays.delete(this.item.id)
         this.$router.push('/')
       })
     },
@@ -87,6 +79,7 @@ export default {
     }
   },
   mounted () {
+    this.workdays = new WorkDays(this.$localStorage)
     this.load()
   }
 }
