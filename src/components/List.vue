@@ -79,9 +79,14 @@ export default {
     }
   },
   mounted () {
+    this.workdays = new WorkDays(this.$localStorage)
     this.workdayItems = this.workdays.getAll()
     this.hourlyIncome = this.workdays.income('1:00')
   },
+  computed: {
+    totalHours () {
+      return this.workdays ? this.workdays.totalHours() : 0
+    },
     totalIncome () {
       return this.workdays ? this.workdays.income(this.workdays.totalHours(), this.hourlyIncome) : 0
     },

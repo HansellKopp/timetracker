@@ -89,7 +89,11 @@ export default {
   border-radius: 0 !important;
 }
 footer {
+  background-color: #2196f3;
   color: white;
+  font-size: 1.2em;
+  text-align: right;
+  padding: 5px;
 }
 
 </style>
