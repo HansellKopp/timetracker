@@ -68,7 +68,7 @@ export default {
       item: {
         date: new Date(),
         start: new Date().getHours() + ':' + new Date().getMinutes(),
-        end: (new Date().getHours() + 8) + ':' + new Date().getMinutes()
+        end: (new Date().getHours() + 1) + ':' + new Date().getMinutes()
       },
       workdays: null
     }
